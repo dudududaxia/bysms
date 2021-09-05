@@ -14,3 +14,7 @@ class Customer(models.Model):
 
     # 地址
     address = models.CharField(max_length=200)
+
+    # 此字段是customer数据库创建完成后 添加的字段
+    # qq
+    qq = models.CharField(max_length=200, null=True)
