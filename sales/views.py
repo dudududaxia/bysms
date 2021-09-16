@@ -5,6 +5,40 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from common.models import Customer
 
+# 先定义好HTML模板
+html_template = '''
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+</style>
+</head>
+    <body>
+        <table>
+        <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>电话号码</th>
+        <th>地址</th>
+        </tr>
+
+        %s
+
+
+        </table>
+    </body>
+</html>
+'''
+
 
 def list_orders(request):
     # request 是Django中的 HttpRequest 对象, 包含了HTTP请求中的信息
@@ -32,13 +66,16 @@ def list_customers(request):
         # select * from  Customer where phone_number = 13899998888
         qs = qs.filter(phone_number=ph)
 
-    # 定义返回字符串
-    retStr = ''
+    # 生成html模板中要插入的html片段内容
+    tableContent = ''
 
     for customer in qs:
+
+        tableContent += '<tr>'
+
         # Looping through all key-value pairs
         for key, value in customer.items():
-            retStr += f'{key} : {value} | '
-        # 输出整条数据后 需要换行 -- <br> 表示换行
-        retStr += '<br>'
-    return HttpResponse(retStr)
+            tableContent += f'<td>{value}</td>'
+
+        tableContent += '<tr>'
+    return HttpResponse(html_template%tableContent)
