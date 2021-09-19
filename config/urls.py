@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# 静态文件服务
+from django.conf.urls.static import static
 
 
 urlpatterns = [
+
+    # 匹配路由表时, 是按照 书写的先后顺序 匹配的
+    # 匹配成功后, 进入相应的子路由表
+    # 匹配不成功, 执行静态文件
     path('admin/', admin.site.urls),
 
     # 添加路由记录
-    path('sales/', include("sales.urls")),
-]
+    path('sales/',      include("sales.urls")),
+    path('api/mgr/',   include("mgr.urls")),
+] + static("/", document_root="./z_dist")
