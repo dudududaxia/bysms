@@ -9,9 +9,13 @@ def sign_in(request):
     user_name = request.POST.get('username')
     passwd = request.POST.get('password')
 
-    # 使用 Django auth 库里面的 方法校验用户名、密码
-    user = authenticate(username=user_name, password=passwd)
+    # 登陆过程:
+    # step 1: 校验用户的账户密码
+    # step 2: 校验用户(is_active, is_superuser)
 
+    # 使用 Django auth 库里面的 方法校验用户名、密码
+    # 校验成功: 返回用户信息; 校验不成功: 返回None
+    user = authenticate(username=user_name, password=passwd)
 
     # 如果能找到用户，并且密码正确
     if user is not None:

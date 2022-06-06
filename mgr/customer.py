@@ -6,6 +6,23 @@ from common.models import Customer
 def dispatcher(request):
     # 将请求参数统一放入request 的 params 属性中，方便后续处理
 
+    # 疑问
+    # 为撒不是通过session id来判断，如何通过session_id来判断
+    # 根据session判断用户是否是登录的管理员用户
+    if 'usertype' not in request.session:
+        return JsonResponse({
+            'ret': 302,
+            'msg': '未登录',
+            'redirect': '/mgr/sign.html'},
+            status=302)
+
+    if request.session['usertype'] != 'mgr':
+        return JsonResponse({
+            'ret': 302,
+            'msg': '用户非mgr类型',
+            'redirect': '/mgr/sign.html'},
+            status=302)
+
     # GET请求 参数在url中，同过request 对象的 GET属性获取
     if request.method == 'GET':
         request.params = request.GET
